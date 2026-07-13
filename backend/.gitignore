@@ -1,0 +1,26 @@
+# Maven
+target/
+
+# VS Code
+.vscode/
+
+# IntelliJ
+.idea/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+hs_err_pid*
+replay_pid*
+
+# Environment
+.env
+application-local.properties
+
+# OS
+.DS_Store
+Thumbs.db
