@@ -10,6 +10,8 @@ import com.talentai.backend.entity.User;
 import com.talentai.backend.service.AuthService;
 import com.talentai.backend.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -25,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest request) {
 
         User user = userService.registerUser(request);
 
