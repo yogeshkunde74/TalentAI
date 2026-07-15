@@ -1,12 +1,14 @@
 package com.talentai.backend.ai.service.impl;
 
+import java.util.List;
+import com.talentai.backend.ai.entity.ResumeAnalysis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talentai.backend.ai.client.GeminiClient;
 import com.talentai.backend.ai.dto.ResumeAnalysisResponse;
 import com.talentai.backend.ai.service.AIService;
 import org.springframework.stereotype.Service;
 import com.talentai.backend.ai.repository.ResumeAnalysisRepository;
-import com.talentai.backend.ai.entity.ResumeAnalysis;
+//import com.talentai.backend.ai.entity.ResumeAnalysis;
 
 @Service
 public class AIServiceImpl implements AIService {
@@ -106,5 +108,12 @@ public class AIServiceImpl implements AIService {
       throw new RuntimeException("Failed to parse AI response");
 
     }
+  }
+
+  @Override
+  public List<ResumeAnalysis> getAllResumeAnalysis() {
+
+    return resumeAnalysisRepository.findAll();
+
   }
 }
