@@ -5,62 +5,106 @@ import com.talentai.backend.ai.client.GeminiClient;
 import com.talentai.backend.ai.dto.ResumeAnalysisResponse;
 import com.talentai.backend.ai.service.AIService;
 import org.springframework.stereotype.Service;
+import com.talentai.backend.ai.repository.ResumeAnalysisRepository;
+import com.talentai.backend.ai.entity.ResumeAnalysis;
 
 @Service
 public class AIServiceImpl implements AIService {
 
-    private final GeminiClient geminiClient;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+  private final GeminiClient geminiClient;
+  private final ResumeAnalysisRepository resumeAnalysisRepository;
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public AIServiceImpl(GeminiClient geminiClient) {
-        this.geminiClient = geminiClient;
-    }
+  public AIServiceImpl(
+      GeminiClient geminiClient,
+      ResumeAnalysisRepository resumeAnalysisRepository) {
 
-    @Override
-    public ResumeAnalysisResponse analyzeResume(String resumeText) {
+    this.geminiClient = geminiClient;
+    this.resumeAnalysisRepository = resumeAnalysisRepository;
+  }
 
-        String prompt = """
-                You are an ATS Resume Analyzer.
+  @Override
+  public ResumeAnalysisResponse analyzeResume(String resumeText) {
 
-                Analyze the following resume.
+    String prompt = """
+        You are an ATS Resume Analyzer.
 
-                Return ONLY valid JSON.
+        Analyze the following resume.
 
-                Use exactly this format.
+        Return ONLY valid JSON.
 
-                {
-                  "resumeScore": {
-                    "overallScore": 0,
-                    "technicalScore": 0,
-                    "communicationScore": 0,
-                    "experienceScore": 0
-                  },
-                  "skills": [],
-                  "missingSkills": [],
-                  "strengths": [],
-                  "weaknesses": [],
-                  "interviewQuestions": [
-                    {
-                      "question": "",
-                      "difficulty": ""
-                    }
-                  ]
-                }
+        Do NOT use markdown.
 
-                Resume:
+        Do NOT use ```json.
 
-                """ + resumeText;
+        Do NOT explain anything.
 
-        try {
+        Return exactly this structure:
 
-            String aiResponse = geminiClient.generateContent(prompt);
-
-            return objectMapper.readValue(
-                    aiResponse,
-                    ResumeAnalysisResponse.class);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Gemini response", e);
+        {
+          "resumeScore": {
+            "overallScore": 0,
+            "technicalScore": 0,
+            "communicationScore": 0,
+            "experienceScore": 0
+          },
+          "skills": [],
+          "missingSkills": [],
+          "strengths": [],
+          "weaknesses": [],
+          "interviewQuestions": [
+            {
+              "question": "",
+              "difficulty": ""
+            }
+          ]
         }
+
+        Resume:
+
+        """ + resumeText;
+
+    String aiAnswer = geminiClient.generateContent(prompt);
+
+    aiAnswer = aiAnswer
+        .replace("```json", "")
+        .replace("```", "")
+        .trim();
+
+    System.out.println(aiAnswer);
+
+    try {
+
+      ResumeAnalysisResponse response = objectMapper.readValue(
+          aiAnswer,
+          ResumeAnalysisResponse.class);
+
+      ResumeAnalysis entity = ResumeAnalysis.builder()
+          .overallScore(response.getResumeScore().getOverallScore())
+          .technicalScore(response.getResumeScore().getTechnicalScore())
+          .communicationScore(response.getResumeScore().getCommunicationScore())
+          .experienceScore(response.getResumeScore().getExperienceScore())
+
+          .skills(String.join(", ", response.getSkills()))
+          .missingSkills(String.join(", ", response.getMissingSkills()))
+          .strengths(String.join(", ", response.getStrengths()))
+          .weaknesses(String.join(", ", response.getWeaknesses()))
+
+          .interviewQuestions(
+              objectMapper.writeValueAsString(
+                  response.getInterviewQuestions()))
+
+          .build();
+
+      resumeAnalysisRepository.save(entity);
+      return response;
+
+    } catch (Exception e) {
+
+      e.printStackTrace();
+
+      throw new RuntimeException("Failed to parse AI response");
+
     }
+  }
 }
