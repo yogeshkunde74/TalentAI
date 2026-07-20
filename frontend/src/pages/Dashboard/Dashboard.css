@@ -1,0 +1,24 @@
+.dashboard {
+    min-height: 100vh;
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 40px;
+}
+
+.dashboard h1 {
+    color: #3b82f6;
+    margin-bottom: 10px;
+}
+
+.dashboard p {
+    color: #cbd5e1;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 40px;
+}

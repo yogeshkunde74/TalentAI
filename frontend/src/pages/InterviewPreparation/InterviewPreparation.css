@@ -1,0 +1,85 @@
+.interview-container{
+
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+
+}
+
+.interview-container h1{
+
+    text-align:center;
+    color:white;
+    margin-bottom:30px;
+
+}
+
+.input-card{
+
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.input-card input{
+
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:20px;
+    font-size:16px;
+
+}
+
+.input-card button{
+
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+.input-card button:hover{
+
+    background:#1d4ed8;
+
+}
+
+.analysis-grid{
+
+    display:grid;
+    grid-template-columns:1fr;
+    gap:25px;
+    margin-top:30px;
+
+}
+
+.tips-card{
+
+    margin-top:25px;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.tips-card h2{
+
+    color:#2563eb;
+    margin-bottom:15px;
+
+}
+
+.tips-card p{
+
+    line-height:1.8;
+    color:#374151;
+
+}

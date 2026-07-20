@@ -1,0 +1,79 @@
+.analysis-card{
+    background:#ffffff;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    border:1px solid #e5e7eb;
+}
+
+.analysis-card h3{
+    color:#2563eb;
+    margin-bottom:18px;
+    font-size:22px;
+    font-weight:700;
+    text-align:center;
+}
+
+.analysis-card ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.analysis-card li{
+    padding:12px 0;
+    border-bottom:1px solid #eeeeee;
+    color:#1f2937;
+    font-size:17px;
+    font-weight:500;
+    line-height:1.6;
+}
+
+.analysis-card li:last-child{
+    border-bottom:none;
+}
+.question-item{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+
+}
+
+.question{
+
+    margin:0;
+    color:#1f2937;
+    font-weight:500;
+    flex:1;
+
+}
+
+.difficulty{
+
+    padding:5px 12px;
+    border-radius:20px;
+    color:white;
+    font-size:13px;
+    font-weight:bold;
+
+}
+
+.easy{
+
+    background:#22c55e;
+
+}
+
+.medium{
+
+    background:#f59e0b;
+
+}
+
+.hard{
+
+    background:#ef4444;
+
+}
